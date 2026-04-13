@@ -3,7 +3,7 @@ import type { Phase } from "./types";
 export function calculateProgress(phases: Phase[]): number {
   if (phases.length === 0) return 0;
 
-  const phaseWeight = 100 / 4;
+  const phaseWeight = 100 / phases.length;
   let progress = 0;
 
   for (const phase of phases) {

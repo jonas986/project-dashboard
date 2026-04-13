@@ -1,13 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import type { Project, PhaseType, PhaseStatus } from "@/lib/types";
-import { PHASE_ORDER, PHASE_LABELS } from "@/lib/types";
+import type { Project, PhaseStatus } from "@/lib/types";
 import { supabase } from "@/lib/supabase";
 import { useImageUpload } from "@/hooks/useImageUpload";
 
 interface PhaseInput {
-  phase: PhaseType;
+  name: string;
   start_date: string;
   end_date: string;
   status: PhaseStatus;
@@ -34,15 +33,17 @@ const FILE_INPUT_CLASS =
   "text-sm text-body file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-bg file:text-vodafone-red hover:file:bg-red-bg-alt";
 
 function buildDefaultPhases(project?: Project): PhaseInput[] {
-  return PHASE_ORDER.map((phase) => {
-    const existing = project?.phases.find((p) => p.phase === phase);
-    return {
-      phase,
-      start_date: existing?.start_date ?? "",
-      end_date: existing?.end_date ?? "",
-      status: existing?.status ?? "upcoming",
-    };
-  });
+  if (project?.phases.length) {
+    return [...project.phases]
+      .sort((a, b) => a.sort_order - b.sort_order)
+      .map((p) => ({
+        name: p.phase,
+        start_date: p.start_date ?? "",
+        end_date: p.end_date ?? "",
+        status: p.status,
+      }));
+  }
+  return [];
 }
 
 export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
@@ -84,16 +85,22 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
     const file = e.target.files?.[0] ?? null;
     setImageFile(file);
     if (file) {
-      const url = URL.createObjectURL(file);
-      setImagePreview(url);
+      setImagePreview(URL.createObjectURL(file));
     }
   }
 
-  function updatePhase(
-    index: number,
-    field: keyof PhaseInput,
-    value: string,
-  ) {
+  function addPhase() {
+    setPhases((prev) => [
+      ...prev,
+      { name: "", start_date: "", end_date: "", status: "upcoming" },
+    ]);
+  }
+
+  function removePhase(index: number) {
+    setPhases((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  function updatePhase(index: number, field: keyof PhaseInput, value: string) {
     setPhases((prev) =>
       prev.map((p, i) => (i === index ? { ...p, [field]: value } : p)),
     );
@@ -113,9 +120,12 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
       }
 
       const activePhase = phases.find((p) => p.status === "active");
-      const currentPhase = activePhase?.phase ?? phases[0].phase;
+      const currentPhase = activePhase?.name || phases[0]?.name || "";
+      const validPhases = phases.filter((p) => p.name.trim());
       const deadline =
-        phases.length > 0 ? phases[phases.length - 1].end_date || null : null;
+        validPhases.length > 0
+          ? validPhases[validPhases.length - 1].end_date || null
+          : null;
 
       const projectData = {
         title,
@@ -148,30 +158,38 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
           .insert(projectData)
           .select("id")
           .single();
-        if (error || !data) throw error ?? new Error("Failed to create project");
+        if (error || !data)
+          throw error ?? new Error("Failed to create project");
         projectId = data.id;
       }
 
-      const phaseRows = phases
+      const phaseRows = validPhases
         .filter((p) => p.start_date && p.end_date)
         .map((p, i) => ({
           project_id: projectId,
-          phase: p.phase,
+          phase: p.name.trim(),
           start_date: p.start_date,
           end_date: p.end_date,
           status: p.status,
           sort_order: i + 1,
         }));
 
-      const { error: phaseError } = await supabase
-        .from("project_phases")
-        .insert(phaseRows);
-      if (phaseError) throw phaseError;
+      if (phaseRows.length > 0) {
+        const { error: phaseError } = await supabase
+          .from("project_phases")
+          .insert(phaseRows);
+        if (phaseError) throw phaseError;
+      }
 
       onSaved();
     } catch (err: unknown) {
-      const supaErr = err as { message?: string; details?: string; code?: string };
-      const message = supaErr?.message || supaErr?.details || JSON.stringify(err);
+      const supaErr = err as {
+        message?: string;
+        details?: string;
+        code?: string;
+      };
+      const message =
+        supaErr?.message || supaErr?.details || JSON.stringify(err);
       alert(`Fehler beim Speichern: ${message}`);
     } finally {
       setSaving(false);
@@ -262,43 +280,74 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
               <label className="text-xs font-semibold text-heading uppercase tracking-wide">
                 Phasen
               </label>
+
               {phases.map((phase, index) => (
                 <div
-                  key={phase.phase}
-                  className="grid grid-cols-[100px_1fr_1fr_1fr] gap-3 items-center"
+                  key={index}
+                  className="flex flex-col gap-2 p-3 bg-gray-50 rounded-xl relative"
                 >
-                  <span className="text-sm font-bold text-heading">
-                    {PHASE_LABELS[phase.phase]}
-                  </span>
-                  <select
-                    value={phase.status}
-                    onChange={(e) =>
-                      updatePhase(index, "status", e.target.value)
-                    }
-                    className={INPUT_CLASS}
+                  {/* Remove button */}
+                  <button
+                    type="button"
+                    onClick={() => removePhase(index)}
+                    className="absolute top-2 right-2 w-6 h-6 flex items-center justify-center rounded-full text-muted hover:text-vodafone-red hover:bg-red-bg transition-colors text-xs"
                   >
-                    <option value="upcoming">Upcoming</option>
-                    <option value="active">Active</option>
-                    <option value="completed">Completed</option>
-                  </select>
+                    ✕
+                  </button>
+
+                  {/* Phase name */}
                   <input
-                    type="date"
-                    value={phase.start_date}
-                    onChange={(e) =>
-                      updatePhase(index, "start_date", e.target.value)
-                    }
-                    className={INPUT_CLASS}
+                    type="text"
+                    value={phase.name}
+                    onChange={(e) => updatePhase(index, "name", e.target.value)}
+                    placeholder="Name der Phase (z.B. Planung, Research, Analyse...)"
+                    className="border border-gray-200 rounded-lg px-3 py-2 text-sm text-heading font-semibold focus:outline-none focus:ring-2 focus:ring-vodafone-red/20 focus:border-vodafone-red"
                   />
-                  <input
-                    type="date"
-                    value={phase.end_date}
-                    onChange={(e) =>
-                      updatePhase(index, "end_date", e.target.value)
-                    }
-                    className={INPUT_CLASS}
-                  />
+
+                  {/* Status + Dates row */}
+                  <div className="grid grid-cols-3 gap-2">
+                    <select
+                      value={phase.status}
+                      onChange={(e) =>
+                        updatePhase(index, "status", e.target.value)
+                      }
+                      className="text-xs border border-gray-200 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-vodafone-red/20"
+                    >
+                      <option value="upcoming">Upcoming</option>
+                      <option value="active">Aktiv</option>
+                      <option value="completed">Abgeschlossen</option>
+                    </select>
+                    <input
+                      type="date"
+                      value={phase.start_date}
+                      onChange={(e) =>
+                        updatePhase(index, "start_date", e.target.value)
+                      }
+                      className="text-xs border border-gray-200 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-vodafone-red/20"
+                    />
+                    <input
+                      type="date"
+                      value={phase.end_date}
+                      onChange={(e) =>
+                        updatePhase(index, "end_date", e.target.value)
+                      }
+                      className="text-xs border border-gray-200 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-vodafone-red/20"
+                    />
+                  </div>
                 </div>
               ))}
+
+              {/* Add Phase Button */}
+              <button
+                type="button"
+                onClick={addPhase}
+                className="flex items-center justify-center gap-2 py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm text-muted hover:text-vodafone-red hover:border-vodafone-red transition-colors"
+              >
+                <span className="w-5 h-5 rounded-full border border-current flex items-center justify-center text-xs">
+                  +
+                </span>
+                Phase hinzufügen
+              </button>
             </div>
 
             {/* Action Buttons */}

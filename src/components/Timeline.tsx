@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import type { Phase } from "@/lib/types";
-import { PHASE_LABELS } from "@/lib/types";
 import { MilestoneList } from "./MilestoneList";
 
 interface TimelineProps {
@@ -131,7 +130,7 @@ export function Timeline({
                     : "text-heading"
                 }`}
               >
-                {PHASE_LABELS[phase.phase]}
+                {phase.phase}
               </p>
               <p className="text-xs text-muted mt-0.5">
                 {formatDateRange(phase.start_date, phase.end_date)}

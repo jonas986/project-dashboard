@@ -9,7 +9,7 @@ export interface Milestone {
 export interface Phase {
   id: string;
   project_id: string;
-  phase: PhaseType;
+  phase: string;
   start_date: string;
   end_date: string;
   status: PhaseStatus;
@@ -24,26 +24,12 @@ export interface Project {
   responsible_name: string;
   responsible_initials: string;
   cover_image_url: string | null;
-  current_phase: PhaseType;
+  current_phase: string;
   deadline: string | null;
   created_at: string;
   updated_at: string;
   phases: Phase[];
 }
 
-export type PhaseType = "planung" | "research" | "analyse" | "abschluss";
 export type PhaseStatus = "completed" | "active" | "upcoming";
 export type DeadlineStatus = "green" | "yellow" | "red";
-
-export const PHASE_ORDER: PhaseType[] = [
-  "planung",
-  "research",
-  "analyse",
-  "abschluss",
-];
-export const PHASE_LABELS: Record<PhaseType, string> = {
-  planung: "Planung",
-  research: "Research",
-  analyse: "Analyse",
-  abschluss: "Abschluss",
-};

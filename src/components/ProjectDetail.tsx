@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import type { Project } from "@/lib/types";
-import { PHASE_LABELS } from "@/lib/types";
 import { calculateProgress } from "@/lib/progress";
 import { supabase } from "@/lib/supabase";
 import { Timeline } from "./Timeline";
@@ -103,7 +102,7 @@ export function ProjectDetail({
         <div className="p-8">
           {/* Phase badge */}
           <span className="inline-block bg-red-bg text-vodafone-red px-3.5 py-1 rounded-full text-xs font-semibold mb-3">
-            {PHASE_LABELS[project.current_phase]}
+            {project.current_phase}
           </span>
 
           {/* Title */}
