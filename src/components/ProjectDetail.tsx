@@ -79,21 +79,22 @@ export function ProjectDetail({
     >
       <div className="relative w-full max-w-[720px] mx-4 max-h-[90vh] overflow-y-auto bg-white rounded-[24px] shadow-modal animate-modal-in">
         {/* Cover image */}
-        <div
-          className="h-[140px] sm:h-[220px] bg-cover bg-center relative rounded-t-[24px]"
-          style={{
-            backgroundImage: project.cover_image_url
-              ? `url(${project.cover_image_url})`
-              : "linear-gradient(135deg, #E60000, #FF3333)",
-          }}
-        >
-          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-black/20 to-transparent" />
+        <div className="h-[140px] sm:h-[220px] relative rounded-t-[24px] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
+          {project.cover_image_url ? (
+            <img
+              src={project.cover_image_url}
+              alt={project.title}
+              className="w-full h-full object-contain p-6"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-vodafone-red to-red-light" />
+          )}
         </div>
 
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-lg text-white/90 text-xs hover:bg-black/40 transition-all duration-200"
+          className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-black/10 backdrop-blur-lg text-heading text-xs hover:bg-black/20 transition-all duration-200"
         >
           ✕
         </button>

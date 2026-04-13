@@ -16,15 +16,16 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
       onClick={onClick}
       className="bg-white rounded-[20px] overflow-hidden shadow-card border border-black/[0.04] cursor-pointer transition-all duration-[250ms] ease-[cubic-bezier(.2,.8,.4,1)] hover:-translate-y-1.5 hover:shadow-card-hover hover:border-black/[0.08]"
     >
-      <div
-        className="h-[170px] bg-cover bg-center relative"
-        style={{
-          backgroundImage: project.cover_image_url
-            ? `url(${project.cover_image_url})`
-            : "linear-gradient(135deg, #E60000, #FF3333)",
-        }}
-      >
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/15 to-transparent" />
+      <div className="h-[170px] relative bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+        {project.cover_image_url ? (
+          <img
+            src={project.cover_image_url}
+            alt={project.title}
+            className="w-full h-full object-contain p-4"
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-vodafone-red to-red-light" />
+        )}
         <div className="absolute top-3.5 right-3.5 bg-white/90 backdrop-blur-md text-vodafone-red px-3.5 py-1 rounded-full text-xs font-semibold shadow-md border border-white/60">
           {project.current_phase}
         </div>

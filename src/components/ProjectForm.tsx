@@ -267,11 +267,11 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
                 Titelbild
               </label>
               {imagePreview && (
-                <div className="w-full h-[140px] rounded-xl overflow-hidden mb-1">
+                <div className="w-full h-[140px] rounded-xl overflow-hidden mb-1 bg-gradient-to-br from-gray-50 to-gray-100">
                   <img
                     src={imagePreview}
                     alt="Vorschau"
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain p-4"
                   />
                 </div>
               )}
