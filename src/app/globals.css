@@ -1,26 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ── Vodafone Theme ─────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Colors */
+  --color-vodafone-red: #E60000;
+  --color-red-dark: #CC0000;
+  --color-red-darker: #B30000;
+  --color-red-light: #FF4D4D;
+  --color-red-bg: #FFF0F0;
+  --color-red-bg-alt: #FFEAEA;
+  --color-page: #F5F5F7;
+  --color-heading: #1a1a1a;
+  --color-body: #666666;
+  --color-body-light: #777777;
+  --color-muted: #aaaaaa;
+
+  /* Font */
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* Border radius */
+  --radius-card: 20px;
+  --radius-modal: 24px;
+
+  /* Shadows */
+  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.10);
+  --shadow-modal: 0 25px 60px rgba(0, 0, 0, 0.15);
+
+  /* Animations */
+  --animate-skeleton-pulse: skeleton-pulse 1.8s ease-in-out infinite;
+  --animate-dot-pulse: dot-pulse 1.4s ease-in-out infinite;
+  --animate-modal-in: modal-in 0.2s ease-out;
+  --animate-overlay-in: overlay-in 0.2s ease-out;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Keyframes ──────────────────────────────────────────── */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes dot-pulse {
+  0%, 80%, 100% { opacity: 0; }
+  40% { opacity: 1; }
+}
+
+@keyframes modal-in {
+  0% { opacity: 0; transform: scale(0.95) translateY(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes overlay-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background-color: #F5F5F7;
+  color: #666666;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Utilities ──────────────────────────────────────────── */
+@utility progress-shine {
+  position: relative;
+  overflow: hidden;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    animation: progress-shine-move 2s ease-in-out infinite;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes progress-shine-move {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
