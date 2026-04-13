@@ -26,45 +26,64 @@ function SortableMilestone({
   milestone,
   phaseStatus,
   onToggle,
+  onDelete,
 }: {
   milestone: Milestone;
   phaseStatus: PhaseStatus;
   onToggle: (id: string, current: boolean) => void;
+  onDelete: (id: string) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: milestone.id });
   const style = { transform: CSS.Transform.toString(transform), transition };
+
   return (
     <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
-      className="text-xs mt-1.5 font-semibold cursor-grab active:cursor-grabbing flex items-center gap-1.5"
+      className="text-xs mt-1.5 font-semibold flex items-center gap-1.5 group"
     >
-      <span className="text-muted/40">⠿</span>
+      {/* Drag handle */}
+      <span
+        {...attributes}
+        {...listeners}
+        className="text-muted/40 cursor-grab active:cursor-grabbing select-none"
+      >
+        ⠿
+      </span>
+
+      {/* Milestone text (clickable to toggle) */}
       {milestone.completed ? (
         <span
-          className="text-vodafone-red cursor-pointer"
+          className="text-vodafone-red cursor-pointer flex-1"
           onClick={() => onToggle(milestone.id, milestone.completed)}
         >
           ✓ {milestone.title}
         </span>
       ) : phaseStatus === "active" ? (
         <span
-          className="text-vodafone-red cursor-pointer"
+          className="text-vodafone-red cursor-pointer flex-1"
           onClick={() => onToggle(milestone.id, milestone.completed)}
         >
           → {milestone.title}
         </span>
       ) : (
         <span
-          className="text-muted cursor-pointer"
+          className="text-muted cursor-pointer flex-1"
           onClick={() => onToggle(milestone.id, milestone.completed)}
         >
           {milestone.title}
         </span>
       )}
+
+      {/* Delete button */}
+      <button
+        type="button"
+        onClick={() => onDelete(milestone.id)}
+        className="opacity-0 group-hover:opacity-100 transition-opacity text-muted hover:text-vodafone-red text-[10px] w-4 h-4 flex items-center justify-center rounded-full hover:bg-red-bg"
+      >
+        ✕
+      </button>
     </div>
   );
 }
@@ -105,6 +124,11 @@ export function MilestoneList({
     onReordered();
   }
 
+  async function deleteMilestone(id: string) {
+    await supabase.from("milestones").delete().eq("id", id);
+    onReordered();
+  }
+
   if (milestones.length === 0) return null;
   return (
     <DndContext
@@ -122,6 +146,7 @@ export function MilestoneList({
             milestone={milestone}
             phaseStatus={phaseStatus}
             onToggle={toggleMilestone}
+            onDelete={deleteMilestone}
           />
         ))}
       </SortableContext>
