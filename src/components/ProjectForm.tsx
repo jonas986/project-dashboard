@@ -20,12 +20,11 @@ interface ProjectFormProps {
 }
 
 function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((w) => w.charAt(0))
-    .join("")
-    .toUpperCase()
-    .slice(0, 2);
+  const parts = name.trim().split(/\s+/);
+  if (parts.length >= 2) {
+    return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+  }
+  return name.trim().slice(0, 2).toUpperCase().padEnd(2, "X");
 }
 
 const INPUT_CLASS =
@@ -170,8 +169,9 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
       if (phaseError) throw phaseError;
 
       onSaved();
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Unknown error";
+    } catch (err: unknown) {
+      const supaErr = err as { message?: string; details?: string; code?: string };
+      const message = supaErr?.message || supaErr?.details || JSON.stringify(err);
       alert(`Fehler beim Speichern: ${message}`);
     } finally {
       setSaving(false);
