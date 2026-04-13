@@ -80,7 +80,7 @@ function SortableMilestone({
       <button
         type="button"
         onClick={() => onDelete(milestone.id)}
-        className="opacity-0 group-hover:opacity-100 transition-opacity text-muted hover:text-vodafone-red text-[10px] w-4 h-4 flex items-center justify-center rounded-full hover:bg-red-bg"
+        className="sm:opacity-0 opacity-60 sm:group-hover:opacity-100 transition-opacity text-muted hover:text-vodafone-red text-[10px] w-4 h-4 flex items-center justify-center rounded-full hover:bg-red-bg"
       >
         ✕
       </button>

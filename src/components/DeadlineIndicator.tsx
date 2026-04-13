@@ -18,7 +18,7 @@ export function DeadlineIndicator({ deadline }: DeadlineIndicatorProps) {
       className={`w-2.5 h-2.5 rounded-full ${COLORS[status]}`}
       title={
         status === "green"
-          ? "On Track"
+          ? "Im Zeitplan"
           : status === "yellow"
             ? "Bald fällig"
             : "Überfällig"

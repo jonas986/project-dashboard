@@ -44,6 +44,7 @@ function MilestoneInput({
       handleSubmit();
     }
     if (e.key === "Escape") {
+      e.stopPropagation();
       setValue("");
       setIsOpen(false);
     }

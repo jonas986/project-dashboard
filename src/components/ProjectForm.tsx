@@ -64,6 +64,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
     buildDefaultPhases(project),
   );
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -108,6 +109,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError(null);
     setSaving(true);
 
     try {
@@ -190,7 +192,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
       };
       const message =
         supaErr?.message || supaErr?.details || JSON.stringify(err);
-      alert(`Fehler beim Speichern: ${message}`);
+      setError(`Fehler beim Speichern: ${message}`);
     } finally {
       setSaving(false);
     }
@@ -209,6 +211,12 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
           </h2>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+            {error && (
+              <div className="bg-red-bg border border-vodafone-red/20 text-vodafone-red text-sm font-medium px-4 py-3 rounded-xl">
+                {error}
+              </div>
+            )}
+
             {/* Title */}
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-semibold text-heading uppercase tracking-wide">
@@ -306,6 +314,9 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
 
                   {/* Status + Dates row */}
                   <div className="grid grid-cols-3 gap-2">
+                    <p className="text-[10px] text-muted font-medium">Status</p>
+                    <p className="text-[10px] text-muted font-medium">Start</p>
+                    <p className="text-[10px] text-muted font-medium">Ende</p>
                     <select
                       value={phase.status}
                       onChange={(e) =>
@@ -313,7 +324,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
                       }
                       className="text-xs border border-gray-200 rounded-lg px-2 py-2 focus:outline-none focus:ring-2 focus:ring-vodafone-red/20"
                     >
-                      <option value="upcoming">Upcoming</option>
+                      <option value="upcoming">Bevorstehend</option>
                       <option value="active">Aktiv</option>
                       <option value="completed">Abgeschlossen</option>
                     </select>
@@ -351,7 +362,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3 pt-4 border-t border-black/[0.06]">
+            <div className="flex gap-3 sticky bottom-0 bg-white pt-4 pb-2 -mx-8 px-8 border-t border-black/[0.06]">
               <button
                 type="submit"
                 disabled={saving || uploading}

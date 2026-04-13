@@ -25,16 +25,18 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
         }}
       >
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/15 to-transparent" />
-        <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-sm text-vodafone-red px-3.5 py-1 rounded-full text-xs font-semibold shadow-sm">
+        <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-sm text-vodafone-red px-3.5 py-1 rounded-full text-xs font-semibold shadow-sm border border-black/[0.06]">
           {project.current_phase}
         </div>
       </div>
       <div className="p-6">
         <div className="flex items-start justify-between mb-2">
-          <h3 className="text-lg font-bold text-heading tracking-tight">
+          <h3 className="text-lg font-bold text-heading tracking-tight line-clamp-2">
             {project.title}
           </h3>
-          <DeadlineIndicator deadline={project.deadline} />
+          <div className="shrink-0 ml-2">
+            <DeadlineIndicator deadline={project.deadline} />
+          </div>
         </div>
         <div className="flex items-center gap-2.5 mb-5">
           <div className="w-[30px] h-[30px] rounded-full bg-gradient-to-br from-vodafone-red to-red-light flex items-center justify-center text-[11px] text-white font-bold shadow-sm shadow-vodafone-red/30">

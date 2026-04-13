@@ -80,7 +80,7 @@ export function ProjectDetail({
       <div className="relative w-full max-w-[720px] mx-4 max-h-[90vh] overflow-y-auto bg-white rounded-[24px] shadow-modal animate-modal-in">
         {/* Cover image */}
         <div
-          className="h-[220px] bg-cover bg-center relative rounded-t-[24px]"
+          className="h-[140px] sm:h-[220px] bg-cover bg-center relative rounded-t-[24px]"
           style={{
             backgroundImage: project.cover_image_url
               ? `url(${project.cover_image_url})`
@@ -93,13 +93,13 @@ export function ProjectDetail({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-md text-white text-sm font-bold hover:bg-black/50 transition-colors"
+          className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-md text-white text-sm font-bold hover:bg-black/50 transition-colors"
         >
           ✕
         </button>
 
         {/* Body */}
-        <div className="p-8">
+        <div className="p-5 sm:p-8">
           {/* Phase badge */}
           <span className="inline-block bg-red-bg text-vodafone-red px-3.5 py-1 rounded-full text-xs font-semibold mb-3">
             {project.current_phase}
@@ -118,7 +118,7 @@ export function ProjectDetail({
           )}
 
           {/* Metadata grid */}
-          <div className="grid grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
             <div>
               <p className="text-[11px] text-muted font-medium uppercase tracking-wide mb-1">
                 Verantwortlich
@@ -178,7 +178,7 @@ export function ProjectDetail({
             </button>
             <button
               onClick={onDelete}
-              className="flex-1 bg-black/[0.04] text-body py-3 rounded-xl text-sm font-bold hover:bg-black/[0.08] transition-colors"
+              className="px-6 bg-black/[0.04] text-body py-3 rounded-xl text-sm font-bold hover:text-vodafone-red hover:bg-red-bg transition-colors"
             >
               Löschen
             </button>

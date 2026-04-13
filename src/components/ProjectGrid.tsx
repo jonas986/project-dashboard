@@ -16,8 +16,22 @@ export function ProjectGrid({
   onCardClick,
   onAddClick,
 }: ProjectGridProps) {
+  if (!loading && projects.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20">
+        <h2 className="text-xl font-bold text-heading mb-2">
+          Noch keine Projekte
+        </h2>
+        <p className="text-sm text-muted mb-8">
+          Erstelle dein erstes Projekt
+        </p>
+        <AddProjectCard onClick={onAddClick} />
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))] gap-6">
       {loading ? (
         <>
           <ProjectCardSkeleton />

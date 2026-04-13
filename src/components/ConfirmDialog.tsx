@@ -26,7 +26,7 @@ export function ConfirmDialog({
 
   return (
     <div
-      className="fixed inset-0 z-[60] flex items-center justify-center p-8 animate-overlay-in"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-8 bg-black/40 backdrop-blur-sm animate-overlay-in"
       onClick={onClose}
     >
       <div
@@ -44,17 +44,17 @@ export function ConfirmDialog({
         </p>
         <div className="flex gap-3 justify-center">
           <button
-            onClick={handleDelete}
-            disabled={deleting}
-            className="bg-vodafone-red text-white px-6 py-2.5 rounded-full text-sm font-bold hover:-translate-y-0.5 transition-all shadow-md disabled:opacity-50"
-          >
-            {deleting ? "Löschen..." : "Ja, löschen"}
-          </button>
-          <button
             onClick={onClose}
-            className="bg-gray-100 text-gray-600 px-6 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-200 transition-colors"
+            className="bg-vodafone-red text-white px-6 py-2.5 rounded-full text-sm font-bold hover:bg-red-dark transition-colors shadow-md"
           >
             Abbrechen
+          </button>
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            className="bg-red-bg text-vodafone-red border border-vodafone-red px-6 py-2.5 rounded-full text-sm font-bold transition-colors disabled:opacity-50"
+          >
+            {deleting ? "Löschen..." : "Ja, löschen"}
           </button>
         </div>
       </div>
