@@ -11,20 +11,25 @@ import type { Project } from "@/lib/types";
 
 export default function Home() {
   const { projects, loading, refetch } = useProjects();
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [editingProject, setEditingProject] = useState<Project | undefined>(
     undefined,
   );
   const [showForm, setShowForm] = useState(false);
   const [deletingProject, setDeletingProject] = useState<Project | null>(null);
 
+  // Always derive from live data
+  const selectedProject = selectedProjectId
+    ? projects.find((p) => p.id === selectedProjectId) ?? null
+    : null;
+
   function handleCardClick(project: Project) {
-    setSelectedProject(project);
+    setSelectedProjectId(project.id);
     window.history.pushState(null, "", `/project/${project.id}`);
   }
 
   function handleClose() {
-    setSelectedProject(null);
+    setSelectedProjectId(null);
     window.history.pushState(null, "", "/");
   }
 
@@ -36,7 +41,7 @@ export default function Home() {
   function handleEdit() {
     if (selectedProject) {
       setEditingProject(selectedProject);
-      setSelectedProject(null);
+      setSelectedProjectId(null);
       setShowForm(true);
     }
   }
@@ -63,7 +68,7 @@ export default function Home() {
           onEdit={handleEdit}
           onDelete={() => {
             setDeletingProject(selectedProject);
-            setSelectedProject(null);
+            setSelectedProjectId(null);
           }}
           onRefetch={refetch}
         />

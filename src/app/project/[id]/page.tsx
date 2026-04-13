@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { ProjectGrid } from "@/components/ProjectGrid";
@@ -14,29 +14,27 @@ export default function ProjectDeepLink() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const { projects, loading, refetch } = useProjects();
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
+    params.id ?? null,
+  );
   const [editingProject, setEditingProject] = useState<Project | undefined>(
     undefined,
   );
   const [showForm, setShowForm] = useState(false);
   const [deletingProject, setDeletingProject] = useState<Project | null>(null);
 
-  useEffect(() => {
-    if (!loading && projects.length > 0 && params.id) {
-      const found = projects.find((p) => p.id === params.id);
-      if (found) {
-        setSelectedProject(found);
-      }
-    }
-  }, [loading, projects, params.id]);
+  // Always derive from live data
+  const selectedProject = selectedProjectId
+    ? projects.find((p) => p.id === selectedProjectId) ?? null
+    : null;
 
   function handleClose() {
-    setSelectedProject(null);
+    setSelectedProjectId(null);
     router.push("/");
   }
 
   function handleCardClick(project: Project) {
-    setSelectedProject(project);
+    setSelectedProjectId(project.id);
     window.history.pushState(null, "", `/project/${project.id}`);
   }
 
@@ -48,7 +46,7 @@ export default function ProjectDeepLink() {
   function handleEdit() {
     if (selectedProject) {
       setEditingProject(selectedProject);
-      setSelectedProject(null);
+      setSelectedProjectId(null);
       setShowForm(true);
     }
   }
@@ -75,7 +73,7 @@ export default function ProjectDeepLink() {
           onEdit={handleEdit}
           onDelete={() => {
             setDeletingProject(selectedProject);
-            setSelectedProject(null);
+            setSelectedProjectId(null);
           }}
           onRefetch={refetch}
         />
