@@ -2,9 +2,11 @@
 
 import type { Phase } from "@/lib/types";
 import { PHASE_LABELS } from "@/lib/types";
+import { MilestoneList } from "./MilestoneList";
 
 interface TimelineProps {
   phases: Phase[];
+  onMilestoneReordered: () => void;
 }
 
 function formatDateRange(start: string, end: string): string {
@@ -18,7 +20,7 @@ function formatDateRange(start: string, end: string): string {
   return `${sDay}.${sMonth}. – ${eDay}.${eMonth}.${eYear}`;
 }
 
-export function Timeline({ phases }: TimelineProps) {
+export function Timeline({ phases, onMilestoneReordered }: TimelineProps) {
   const sorted = [...phases].sort((a, b) => a.sort_order - b.sort_order);
 
   return (
@@ -59,37 +61,11 @@ export function Timeline({ phases }: TimelineProps) {
               </p>
 
               {/* Milestones */}
-              {phase.milestones.length > 0 && (
-                <ul className="mt-2 flex flex-col gap-1">
-                  {phase.milestones.map((m) => {
-                    if (phase.status === "completed" || m.completed) {
-                      return (
-                        <li
-                          key={m.id}
-                          className="text-xs text-vodafone-red font-medium"
-                        >
-                          ✓ {m.title}
-                        </li>
-                      );
-                    }
-                    if (phase.status === "active") {
-                      return (
-                        <li
-                          key={m.id}
-                          className="text-xs text-vodafone-red font-medium"
-                        >
-                          → {m.title}
-                        </li>
-                      );
-                    }
-                    return (
-                      <li key={m.id} className="text-xs text-muted">
-                        {m.title}
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
+              <MilestoneList
+                milestones={phase.milestones}
+                phaseStatus={phase.status}
+                onReordered={onMilestoneReordered}
+              />
             </div>
           </div>
         ))}

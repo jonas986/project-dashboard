@@ -11,6 +11,7 @@ interface ProjectDetailProps {
   onClose: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  onRefetch: () => void;
 }
 
 function formatDate(dateStr: string): string {
@@ -26,6 +27,7 @@ export function ProjectDetail({
   onClose,
   onEdit,
   onDelete,
+  onRefetch,
 }: ProjectDetailProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const progress = calculateProgress(project.phases);
@@ -141,7 +143,7 @@ export function ProjectDetail({
           {project.phases.length > 0 && (
             <div className="mb-8">
               <h3 className="text-sm font-bold text-heading mb-4">Timeline</h3>
-              <Timeline phases={project.phases} />
+              <Timeline phases={project.phases} onMilestoneReordered={onRefetch} />
             </div>
           )}
 

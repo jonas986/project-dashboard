@@ -6,6 +6,7 @@ import { Header } from "@/components/Header";
 import { ProjectGrid } from "@/components/ProjectGrid";
 import { ProjectDetail } from "@/components/ProjectDetail";
 import { ProjectForm } from "@/components/ProjectForm";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 import { useProjects } from "@/hooks/useProjects";
 import type { Project } from "@/lib/types";
 
@@ -18,6 +19,7 @@ export default function ProjectDeepLink() {
     undefined,
   );
   const [showForm, setShowForm] = useState(false);
+  const [deletingProject, setDeletingProject] = useState<Project | null>(null);
 
   useEffect(() => {
     if (!loading && projects.length > 0 && params.id) {
@@ -71,7 +73,23 @@ export default function ProjectDeepLink() {
           project={selectedProject}
           onClose={handleClose}
           onEdit={handleEdit}
-          onDelete={() => {}}
+          onDelete={() => {
+            setDeletingProject(selectedProject);
+            setSelectedProject(null);
+          }}
+          onRefetch={refetch}
+        />
+      )}
+      {deletingProject && (
+        <ConfirmDialog
+          projectId={deletingProject.id}
+          projectTitle={deletingProject.title}
+          onClose={() => setDeletingProject(null)}
+          onDeleted={() => {
+            setDeletingProject(null);
+            router.push("/");
+            refetch();
+          }}
         />
       )}
       {showForm && (
