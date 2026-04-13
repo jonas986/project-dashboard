@@ -153,14 +153,16 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
         projectId = data.id;
       }
 
-      const phaseRows = phases.map((p, i) => ({
-        project_id: projectId,
-        phase: p.phase,
-        start_date: p.start_date || null,
-        end_date: p.end_date || null,
-        status: p.status,
-        sort_order: i,
-      }));
+      const phaseRows = phases
+        .filter((p) => p.start_date && p.end_date)
+        .map((p, i) => ({
+          project_id: projectId,
+          phase: p.phase,
+          start_date: p.start_date,
+          end_date: p.end_date,
+          status: p.status,
+          sort_order: i + 1,
+        }));
 
       const { error: phaseError } = await supabase
         .from("project_phases")
