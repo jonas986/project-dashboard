@@ -30,8 +30,9 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
           {project.current_phase}
         </div>
       </div>
-      <div className="p-5">
-        <div className="flex items-start justify-between mb-3">
+      <div className="p-5 flex flex-col">
+        {/* Title area — fixed height for 2 lines so cards always align */}
+        <div className="flex items-start justify-between h-[52px] mb-3">
           <h3 className="text-lg font-bold text-heading tracking-tight line-clamp-2">
             {project.title}
           </h3>
@@ -47,10 +48,12 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
             {project.responsible_name}
           </span>
         </div>
-        <ProgressBar percent={progress} />
-        <p className="text-[11px] text-muted mt-3">
-          {formatRelativeTime(project.updated_at)}
-        </p>
+        <div className="mt-auto">
+          <ProgressBar percent={progress} />
+          <p className="text-[11px] text-muted mt-3">
+            {formatRelativeTime(project.updated_at)}
+          </p>
+        </div>
       </div>
     </div>
   );
