@@ -30,23 +30,66 @@ function MilestoneInput({
   onAdd: (phaseId: string, title: string) => void;
 }) {
   const [value, setValue] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
-  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter" && value.trim()) {
+  function handleSubmit() {
+    if (value.trim()) {
       onAdd(phaseId, value.trim());
       setValue("");
     }
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit();
+    }
+    if (e.key === "Escape") {
+      setValue("");
+      setIsOpen(false);
+    }
+  }
+
+  if (!isOpen) {
+    return (
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="mt-2 flex items-center gap-1 text-xs text-muted hover:text-vodafone-red transition-colors cursor-pointer"
+      >
+        <span className="w-4 h-4 rounded-full border border-dashed border-current flex items-center justify-center text-[10px]">+</span>
+        <span>Meilenstein hinzufügen</span>
+      </button>
+    );
+  }
+
   return (
-    <input
-      type="text"
-      value={value}
-      onChange={(e) => setValue(e.target.value)}
-      onKeyDown={handleKeyDown}
-      placeholder="Neuer Meilenstein..."
-      className="mt-2 w-full text-xs border-b border-dashed border-gray-200 bg-transparent outline-none py-0.5 placeholder:text-muted/50"
-    />
+    <div className="mt-2 flex items-center gap-2">
+      <input
+        type="text"
+        autoFocus
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={handleKeyDown}
+        placeholder="Meilenstein eingeben..."
+        className="flex-1 text-xs border border-gray-200 rounded-lg px-2.5 py-1.5 bg-white outline-none focus:ring-2 focus:ring-vodafone-red/20 focus:border-vodafone-red placeholder:text-muted/50"
+      />
+      <button
+        type="button"
+        onClick={handleSubmit}
+        disabled={!value.trim()}
+        className="text-xs bg-vodafone-red text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-red-dark transition-colors disabled:opacity-30"
+      >
+        +
+      </button>
+      <button
+        type="button"
+        onClick={() => { setValue(""); setIsOpen(false); }}
+        className="text-xs text-muted hover:text-heading transition-colors"
+      >
+        ✕
+      </button>
+    </div>
   );
 }
 

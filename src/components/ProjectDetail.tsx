@@ -53,12 +53,16 @@ export function ProjectDetail({
     const maxSort = project.phases
       .flatMap((p) => p.milestones)
       .reduce((max, m) => Math.max(max, m.sort_order), -1);
-    await supabase.from("milestones").insert({
+    const { error } = await supabase.from("milestones").insert({
       phase_id: phaseId,
       title,
       completed: false,
       sort_order: maxSort + 1,
     });
+    if (error) {
+      alert(`Fehler: ${error.message}`);
+      return;
+    }
     onRefetch();
   }
 
