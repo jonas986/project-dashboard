@@ -10,9 +10,9 @@ export function Header({ projectCount, onAddClick }: HeaderProps) {
       <div className="absolute -bottom-16 right-20 w-36 h-36 rounded-full bg-white/[0.04]" />
       <div className="relative z-10 flex items-center justify-between">
         <div>
-          <p className="text-[11px] font-semibold text-white/50 uppercase tracking-[0.15em] mb-1">Vodafone Market Research</p>
+          <p className="text-[11px] font-semibold text-white/50 uppercase tracking-[0.15em] mb-1">Vodafone</p>
           <h1 className="text-[28px] font-extrabold text-white tracking-tight">
-            Projekte
+            Projektübersicht
           </h1>
           <p className="text-sm text-white/75 mt-1">
             {projectCount} aktive{" "}

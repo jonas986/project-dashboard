@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Projekte — Vodafone Market Research",
-  description: "Vodafone Market Research Project Dashboard",
+  title: "Projektübersicht — Vodafone",
+  description: "Zentrale Projektübersicht für das Vodafone Team",
 };
 
 export default function RootLayout({
