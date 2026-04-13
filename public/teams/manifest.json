@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/teams/v1.16/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.16",
+  "version": "1.0.0",
+  "id": "eded128e-cfa3-4f36-b3bb-65dfc517acd5",
+  "packageName": "com.vodafone.projektdashboard",
+  "name": {
+    "short": "Projekt-Dashboard",
+    "full": "Vodafone Market Research Projekt-Dashboard"
+  },
+  "description": {
+    "short": "Internes Projektdashboard für das Market Research Team",
+    "full": "Echtzeit-Projektdashboard im Vodafone Corporate Design. Projekte anlegen, bearbeiten, löschen. Meilensteine tracken. Kollaborativ — alle Änderungen sofort sichtbar."
+  },
+  "developer": {
+    "name": "Vodafone Market Research",
+    "websiteUrl": "https://project-dashboard-beryl-six.vercel.app",
+    "privacyUrl": "https://project-dashboard-beryl-six.vercel.app",
+    "termsOfUseUrl": "https://project-dashboard-beryl-six.vercel.app"
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#E60000",
+  "staticTabs": [
+    {
+      "entityId": "dashboard",
+      "name": "Dashboard",
+      "contentUrl": "https://project-dashboard-beryl-six.vercel.app/teams",
+      "websiteUrl": "https://project-dashboard-beryl-six.vercel.app/teams",
+      "scopes": ["personal"]
+    }
+  ],
+  "permissions": ["identity"],
+  "validDomains": [
+    "project-dashboard-beryl-six.vercel.app"
+  ]
+}
