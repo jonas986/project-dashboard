@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import type { Project } from "@/lib/types";
 import { PHASE_LABELS } from "@/lib/types";
 import { calculateProgress } from "@/lib/progress";
+import { supabase } from "@/lib/supabase";
 import { Timeline } from "./Timeline";
 
 interface ProjectDetailProps {
@@ -47,6 +48,19 @@ export function ProjectDetail({
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
+
+  async function addMilestone(phaseId: string, title: string) {
+    const maxSort = project.phases
+      .flatMap((p) => p.milestones)
+      .reduce((max, m) => Math.max(max, m.sort_order), -1);
+    await supabase.from("milestones").insert({
+      phase_id: phaseId,
+      title,
+      completed: false,
+      sort_order: maxSort + 1,
+    });
+    onRefetch();
+  }
 
   function handleOverlayClick(e: React.MouseEvent) {
     if (e.target === overlayRef.current) {
@@ -143,7 +157,11 @@ export function ProjectDetail({
           {project.phases.length > 0 && (
             <div className="mb-8">
               <h3 className="text-sm font-bold text-heading mb-4">Timeline</h3>
-              <Timeline phases={project.phases} onMilestoneReordered={onRefetch} />
+              <Timeline
+                phases={project.phases}
+                onMilestoneReordered={onRefetch}
+                onAddMilestone={addMilestone}
+              />
             </div>
           )}
 

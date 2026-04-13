@@ -25,9 +25,11 @@ interface MilestoneListProps {
 function SortableMilestone({
   milestone,
   phaseStatus,
+  onToggle,
 }: {
   milestone: Milestone;
   phaseStatus: PhaseStatus;
+  onToggle: (id: string, current: boolean) => void;
 }) {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: milestone.id });
@@ -42,11 +44,26 @@ function SortableMilestone({
     >
       <span className="text-muted/40">⠿</span>
       {milestone.completed ? (
-        <span className="text-vodafone-red">✓ {milestone.title}</span>
+        <span
+          className="text-vodafone-red cursor-pointer"
+          onClick={() => onToggle(milestone.id, milestone.completed)}
+        >
+          ✓ {milestone.title}
+        </span>
       ) : phaseStatus === "active" ? (
-        <span className="text-vodafone-red">→ {milestone.title}</span>
+        <span
+          className="text-vodafone-red cursor-pointer"
+          onClick={() => onToggle(milestone.id, milestone.completed)}
+        >
+          → {milestone.title}
+        </span>
       ) : (
-        <span className="text-muted">{milestone.title}</span>
+        <span
+          className="text-muted cursor-pointer"
+          onClick={() => onToggle(milestone.id, milestone.completed)}
+        >
+          {milestone.title}
+        </span>
       )}
     </div>
   );
@@ -80,6 +97,14 @@ export function MilestoneList({
     onReordered();
   }
 
+  async function toggleMilestone(id: string, current: boolean) {
+    await supabase
+      .from("milestones")
+      .update({ completed: !current })
+      .eq("id", id);
+    onReordered();
+  }
+
   if (milestones.length === 0) return null;
   return (
     <DndContext
@@ -96,6 +121,7 @@ export function MilestoneList({
             key={milestone.id}
             milestone={milestone}
             phaseStatus={phaseStatus}
+            onToggle={toggleMilestone}
           />
         ))}
       </SortableContext>

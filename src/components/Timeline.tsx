@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import type { Phase } from "@/lib/types";
 import { PHASE_LABELS } from "@/lib/types";
 import { MilestoneList } from "./MilestoneList";
@@ -7,6 +8,7 @@ import { MilestoneList } from "./MilestoneList";
 interface TimelineProps {
   phases: Phase[];
   onMilestoneReordered: () => void;
+  onAddMilestone: (phaseId: string, title: string) => void;
 }
 
 function formatDateRange(start: string, end: string): string {
@@ -20,7 +22,39 @@ function formatDateRange(start: string, end: string): string {
   return `${sDay}.${sMonth}. – ${eDay}.${eMonth}.${eYear}`;
 }
 
-export function Timeline({ phases, onMilestoneReordered }: TimelineProps) {
+function MilestoneInput({
+  phaseId,
+  onAdd,
+}: {
+  phaseId: string;
+  onAdd: (phaseId: string, title: string) => void;
+}) {
+  const [value, setValue] = useState("");
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter" && value.trim()) {
+      onAdd(phaseId, value.trim());
+      setValue("");
+    }
+  }
+
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+      onKeyDown={handleKeyDown}
+      placeholder="Neuer Meilenstein..."
+      className="mt-2 w-full text-xs border-b border-dashed border-gray-200 bg-transparent outline-none py-0.5 placeholder:text-muted/50"
+    />
+  );
+}
+
+export function Timeline({
+  phases,
+  onMilestoneReordered,
+  onAddMilestone,
+}: TimelineProps) {
   const sorted = [...phases].sort((a, b) => a.sort_order - b.sort_order);
 
   return (
@@ -66,6 +100,7 @@ export function Timeline({ phases, onMilestoneReordered }: TimelineProps) {
                 phaseStatus={phase.status}
                 onReordered={onMilestoneReordered}
               />
+              <MilestoneInput phaseId={phase.id} onAdd={onAddMilestone} />
             </div>
           </div>
         ))}
