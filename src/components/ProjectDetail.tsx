@@ -93,7 +93,7 @@ export function ProjectDetail({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-11 h-11 flex items-center justify-center rounded-full bg-black/30 backdrop-blur-md text-white text-sm font-bold hover:bg-black/50 transition-colors"
+          className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full bg-black/20 backdrop-blur-lg text-white/90 text-xs hover:bg-black/40 transition-all duration-200"
         >
           ✕
         </button>
@@ -106,7 +106,7 @@ export function ProjectDetail({
           </span>
 
           {/* Title */}
-          <h2 className="text-[26px] font-extrabold text-heading tracking-tight mb-2">
+          <h2 className="text-[28px] font-bold text-heading tracking-[-0.02em] mb-2">
             {project.title}
           </h2>
 
@@ -118,9 +118,9 @@ export function ProjectDetail({
           )}
 
           {/* Metadata grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 pb-7 border-b border-black/[0.05]">
             <div>
-              <p className="text-[11px] text-muted font-medium uppercase tracking-wide mb-1">
+              <p className="text-[11px] text-muted font-medium uppercase tracking-[0.08em] mb-1">
                 Verantwortlich
               </p>
               <div className="flex items-center gap-2">
@@ -133,7 +133,7 @@ export function ProjectDetail({
               </div>
             </div>
             <div>
-              <p className="text-[11px] text-muted font-medium uppercase tracking-wide mb-1">
+              <p className="text-[11px] text-muted font-medium uppercase tracking-[0.08em] mb-1">
                 Start
               </p>
               <p className="text-sm text-heading font-medium">
@@ -141,7 +141,7 @@ export function ProjectDetail({
               </p>
             </div>
             <div>
-              <p className="text-[11px] text-muted font-medium uppercase tracking-wide mb-1">
+              <p className="text-[11px] text-muted font-medium uppercase tracking-[0.08em] mb-1">
                 Deadline
               </p>
               <p className="text-sm text-heading font-medium">
@@ -149,7 +149,7 @@ export function ProjectDetail({
               </p>
             </div>
             <div>
-              <p className="text-[11px] text-muted font-medium uppercase tracking-wide mb-1">
+              <p className="text-[11px] text-muted font-medium uppercase tracking-[0.08em] mb-1">
                 Fortschritt
               </p>
               <p className="text-sm text-heading font-medium">{progress}%</p>
@@ -172,14 +172,16 @@ export function ProjectDetail({
           <div className="flex gap-3 pt-4 border-t border-black/[0.06]">
             <button
               onClick={onEdit}
-              className="flex-1 bg-vodafone-red text-white py-3 rounded-xl text-sm font-bold hover:bg-red-dark transition-colors"
+              className="flex-1 bg-vodafone-red text-white py-3 rounded-xl text-sm font-bold hover:bg-red-dark transition-colors inline-flex items-center justify-center gap-2"
             >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M10 1.5l2.5 2.5L4.5 12H2v-2.5L10 1.5z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
               Bearbeiten
             </button>
             <button
               onClick={onDelete}
-              className="px-6 bg-black/[0.04] text-body py-3 rounded-xl text-sm font-bold hover:text-vodafone-red hover:bg-red-bg transition-colors"
+              className="px-6 bg-black/[0.04] text-body py-3 rounded-xl text-sm font-bold hover:text-vodafone-red hover:bg-red-bg transition-colors inline-flex items-center justify-center gap-2"
             >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2.5a1 1 0 011-1h2a1 1 0 011 1v1M11 3.5l-.5 8a1 1 0 01-1 1h-5a1 1 0 01-1-1l-.5-8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
               Löschen
             </button>
           </div>

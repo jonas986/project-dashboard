@@ -27,7 +27,7 @@ function getInitials(name: string): string {
 }
 
 const INPUT_CLASS =
-  "border border-gray-200 rounded-xl px-4 py-3 text-sm text-heading font-medium focus:outline-none focus:ring-2 focus:ring-vodafone-red/20 focus:border-vodafone-red";
+  "border border-black/[0.08] rounded-xl px-4 py-3 text-sm text-heading font-medium bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-vodafone-red/15 focus:border-vodafone-red/40 transition-all duration-200 placeholder:text-muted/60";
 
 const FILE_INPUT_CLASS =
   "text-sm text-body file:mr-3 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-bg file:text-vodafone-red hover:file:bg-red-bg-alt";
@@ -219,7 +219,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
 
             {/* Title */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-heading uppercase tracking-wide">
+              <label className="text-xs font-semibold text-heading uppercase tracking-[0.08em]">
                 Titel
               </label>
               <input
@@ -234,7 +234,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
 
             {/* Description */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-heading uppercase tracking-wide">
+              <label className="text-xs font-semibold text-heading uppercase tracking-[0.08em]">
                 Beschreibung
               </label>
               <textarea
@@ -248,7 +248,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
 
             {/* Responsible Name */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-heading uppercase tracking-wide">
+              <label className="text-xs font-semibold text-heading uppercase tracking-[0.08em]">
                 Verantwortlich
               </label>
               <input
@@ -263,7 +263,7 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
 
             {/* Cover Image */}
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-heading uppercase tracking-wide">
+              <label className="text-xs font-semibold text-heading uppercase tracking-[0.08em]">
                 Titelbild
               </label>
               {imagePreview && (
@@ -285,14 +285,14 @@ export function ProjectForm({ project, onClose, onSaved }: ProjectFormProps) {
 
             {/* Phases */}
             <div className="flex flex-col gap-3">
-              <label className="text-xs font-semibold text-heading uppercase tracking-wide">
+              <label className="text-xs font-semibold text-heading uppercase tracking-[0.08em]">
                 Phasen
               </label>
 
               {phases.map((phase, index) => (
                 <div
                   key={index}
-                  className="flex flex-col gap-2 p-3 bg-gray-50 rounded-xl relative"
+                  className="flex flex-col gap-2 p-3 bg-black/[0.02] border border-black/[0.04] rounded-xl relative"
                 >
                   {/* Remove button */}
                   <button

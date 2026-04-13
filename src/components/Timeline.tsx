@@ -115,7 +115,9 @@ export function Timeline({
           <div key={phase.id} className="relative">
             {/* Dot */}
             {phase.status === "completed" ? (
-              <div className="absolute -left-8 top-0.5 w-[22px] h-[22px] rounded-full bg-vodafone-red shadow-[0_0_0_4px_rgba(230,0,0,0.15)]" />
+              <div className="absolute -left-8 top-0.5 w-[22px] h-[22px] rounded-full bg-vodafone-red shadow-[0_0_0_4px_rgba(230,0,0,0.15)] flex items-center justify-center">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 3.5L3.5 6L9 1" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
             ) : phase.status === "active" ? (
               <div className="absolute -left-8 top-0.5 w-[22px] h-[22px] rounded-full border-2 border-vodafone-red bg-white animate-dot-pulse" />
             ) : (

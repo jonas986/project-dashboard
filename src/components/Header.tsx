@@ -5,11 +5,12 @@ interface HeaderProps {
 
 export function Header({ projectCount, onAddClick }: HeaderProps) {
   return (
-    <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-vodafone-red via-red-dark to-red-darker p-8 mb-8">
+    <div className="relative overflow-hidden rounded-[20px] bg-gradient-to-br from-vodafone-red via-red-dark to-red-darker p-10 pb-9 mb-8 grain-overlay">
       <div className="absolute -top-10 -right-5 w-48 h-48 rounded-full bg-white/[0.06]" />
       <div className="absolute -bottom-16 right-20 w-36 h-36 rounded-full bg-white/[0.04]" />
       <div className="relative z-10 flex items-center justify-between">
         <div>
+          <p className="text-[11px] font-semibold text-white/50 uppercase tracking-[0.15em] mb-1">Vodafone Market Research</p>
           <h1 className="text-[28px] font-extrabold text-white tracking-tight">
             Projekte
           </h1>

@@ -24,12 +24,12 @@
   --radius-modal: 24px;
 
   /* Shadows */
-  --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.06);
-  --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.10);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-card-hover: 0 4px 12px rgba(0,0,0,0.05), 0 16px 40px rgba(0,0,0,0.10), 0 0 0 1px rgba(0,0,0,0.02);
   --shadow-modal: 0 25px 60px rgba(0, 0, 0, 0.15);
 
   /* Animations */
-  --animate-skeleton-pulse: skeleton-pulse 1.8s ease-in-out infinite;
+  --animate-skeleton-pulse: skeleton-pulse 2.2s ease-in-out infinite;
   --animate-dot-pulse: dot-pulse 1.4s ease-in-out infinite;
   --animate-modal-in: modal-in 0.2s ease-out;
   --animate-overlay-in: overlay-in 0.2s ease-out;
@@ -37,8 +37,8 @@
 
 /* ── Keyframes ──────────────────────────────────────────── */
 @keyframes skeleton-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 1; }
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1.0; }
 }
 
 @keyframes dot-pulse {
@@ -66,6 +66,21 @@ body {
 }
 
 /* ── Utilities ──────────────────────────────────────────── */
+@utility grain-overlay {
+  position: relative;
+}
+.grain-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
 @utility progress-shine {
   position: relative;
   overflow: hidden;
