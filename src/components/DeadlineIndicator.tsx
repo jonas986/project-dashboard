@@ -12,9 +12,9 @@ const PILL_COLORS: Record<DeadlineStatus, string> = {
   red: "bg-red-50 text-red-600 border-red-200",
 };
 const LABELS: Record<DeadlineStatus, string> = {
-  green: "Im Plan",
-  yellow: "Bald fällig",
-  red: "Überfällig",
+  green: "In Time",
+  yellow: "Due Soon",
+  red: "Overdue",
 };
 
 interface DeadlineIndicatorProps { deadline: string | null; }
