@@ -60,16 +60,9 @@ function SortableMilestone({
         >
           ✓ {milestone.title}
         </span>
-      ) : phaseStatus === "active" ? (
-        <span
-          className="text-vodafone-red cursor-pointer flex-1"
-          onClick={() => onToggle(milestone.id, milestone.completed)}
-        >
-          → {milestone.title}
-        </span>
       ) : (
         <span
-          className="text-muted cursor-pointer flex-1"
+          className="text-muted cursor-pointer flex-1 hover:text-vodafone-red transition-colors"
           onClick={() => onToggle(milestone.id, milestone.completed)}
         >
           {milestone.title}
